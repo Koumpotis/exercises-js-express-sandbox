@@ -74,6 +74,7 @@ app.get('/', (request, response) => {
     <li><a href="/bake?baked_good=cookies&count=10">Bake 10 cookies</a></li>
     <li><a href="/bake?baked_good=loaves+of+bread&count=5">Bake 5 loaves of bread</a> — notice how we represent spaces in the URL.</li>
     <li><a href="/bake?baked_good=cupcakes&count=1138">Bake 1138 cupcakes</a></li>
+    <li><a href="/greet?name=cupcakes&age=19">Greeting page</a></li>
     </ul>
   `;
 
@@ -149,7 +150,7 @@ app.get('/bake', (request, response) => {
 
   content += '<ul>';
 
-  for(let i = 1; i <= count; i++) {
+  for (let i = 1; i <= count; i++) {
     content += `<li>${bakedGood} number ${i}</li>`;
   }
 
@@ -158,6 +159,46 @@ app.get('/bake', (request, response) => {
   response.send(getLayoutHTML(content));
 });
 
+// start
+app.get('/greet', (request, response) => {
+  let name = String(request.query.name);
+  let age = request.query.age;
+
+  let content = `
+    <h1>Hello, ${capitalize(name)}! You must be ${age} years old</h1>
+    <p>
+      <a href='/'>Back to the homepage</a>
+    </p>
+    <form method="GET" action="/greet">
+    <div class="form-section">
+      <label for="name">What is your name? </label>
+      <input type="text" name="name" id="name" required>
+    </div>
+    <div class="form-section">
+    <label for="age">How old are you? </label>
+    <input type="number" name="age" id="age" required>
+  </div>
+  <div class="form-section">
+  <input type="submit" value="Let's bake! ;) ;) ;) ">
+</div>
+</form>
+    <p>
+      I like you ${name}.No, No... I Love you ${name}! Let's bake a 'cake' for every year of your life. ;) That is a total of ${age} 'cakes'. Can you handle me?
+    </p>
+  `;
+
+  // content += '<ul>';
+
+  // for (let i = 1; i <= count; i++) {
+  //   content += `<li>${bakedGood} number ${i}</li>`;
+  // }
+
+  // content += '</ul>';
+
+  response.send(getLayoutHTML(content));
+});
+
+// End
 let SERVER_PORT = process.env.PORT || 3000;
 
 app.listen(SERVER_PORT, () => {
